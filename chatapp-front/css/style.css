@@ -84,6 +84,18 @@ color: #212529;
   padding: 10px;
 }
 
+.input_msg_write textarea {
+  background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+  border: medium none;
+  color: #4c4c4c;
+  font-size: 15px;
+  min-height: 48px;
+  width: 100%;
+  padding: 10px;
+  resize: none;
+}
+
+
 .type_msg {border-top: 1px solid #c4c4c4; position: relative;}
 .msg_send_btn {
   background: #05728f none repeat scroll 0 0;
