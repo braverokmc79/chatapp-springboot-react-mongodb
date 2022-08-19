@@ -31,7 +31,7 @@ function getSendMsgBox(msg, data) {
     let todayDate = year + '-' + month + '-' + date; //오늘 날짜
 
     if (data != undefined) { //데이터를 서버에서 가져올때
-        console.log(data.createdAt);
+        //console.log(data.createdAt);
         if (data.createdAt != undefined && data.createdAt != null && data.createdAt != "") {
             let dbDate = new Date(data.createdAt);
             year = dbDate.getFullYear(); // 년도
@@ -42,9 +42,6 @@ function getSendMsgBox(msg, data) {
             seconds = (("00" + dbDate.getSeconds()).slice(-2));  // 초
         }
 
-    } else {
-        //엔터키를 br 태그로 전환
-        msg = msg.replace(/(?:\r\n|\r|\n)/g, '<br />');
     }
 
     let dayDiffer = getDateDiff(todayDate, year + '-' + month + '-' + date);
@@ -79,14 +76,37 @@ function initMessage(historyMsg, data) {
 }
 
 
-function addMessage() {
+async function addMessage() {
     let chatBox = document.querySelector("#chat-box");
     let chatOutgoinBox = document.createElement("div");
     let msgInput = document.querySelector("#chat-outgoing-msg");
 
-    chatOutgoinBox.className = "outgoing_msg";
-    chatOutgoinBox.innerHTML = getSendMsgBox(msgInput.value);
-    chatBox.append(chatOutgoinBox);
+    //엔터시 <br/> 변경
+    msg = msgInput.value.replace(/(?:\r\n|\r|\n)/g, '<br />');
+    let chat = {
+        sender: "ssar",
+        receiver: "cos",
+        msg: msg
+    }
+
+    await fetch("http://localhost:8080/chat", {
+        method: "POST",
+        headers: {
+            "Content-type": "application/json; charset=utf-8"
+        },
+        body: JSON.stringify(chat)
+    })
+        .then((res) => res.json())
+        .then(data => {
+            console.log("data ", data);
+        })
+        .catch(error => {
+            console.log("에러 :", error);
+        })
+
+    // chatOutgoinBox.className = "outgoing_msg";
+    // chatOutgoinBox.innerHTML = getSendMsgBox(msgInput.value);
+    // chatBox.append(chatOutgoinBox);
     msgInput.value = "";
 }
 
