@@ -1,4 +1,13 @@
-function getMsg(msg) {
+const eventSource = new EventSource("http://localhost:8080/sender/ssar/receiver/cos");
+
+eventSource.onmessage = (event) => {
+    console.log(1, event);
+    const data = JSON.parse(event.data);
+    console.log(2, data);
+}
+
+
+function getSendMsgBox(msg) {
     let today = new Date();
 
     let year = today.getFullYear(); // 년도
@@ -43,7 +52,7 @@ document.querySelector("#chat-outgoing-button").addEventListener("click", () => 
     let chatOutgoinBox = document.createElement("div");
 
     chatOutgoinBox.className = "outgoing_msg";
-    chatOutgoinBox.innerHTML = getMsg(document.querySelector("#chat-outgoing-msg").value);
+    chatOutgoinBox.innerHTML = getSendMsgBox(document.querySelector("#chat-outgoing-msg").value);
     chatBox.append(chatOutgoinBox);
     document.querySelector("#chat-outgoing-msg").value = "";
 });
