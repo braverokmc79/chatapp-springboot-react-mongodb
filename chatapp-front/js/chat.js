@@ -1,13 +1,18 @@
 const eventSource = new EventSource("http://localhost:8080/sender/ssar/receiver/cos");
 
 eventSource.onmessage = (event) => {
-    console.log(1, event);
+    // console.log(1, event);
     const data = JSON.parse(event.data);
-    console.log(2, data);
+    // console.log(2, data);
+
+    //서버에서 데이터를 가져온 후 데이터 파싱 함수호출
+    initMessage(data.msg, data);
 }
 
 
-function getSendMsgBox(msg) {
+
+
+function getSendMsgBox(msg, data) {
     let today = new Date();
 
     let year = today.getFullYear(); // 년도
@@ -20,17 +25,34 @@ function getSendMsgBox(msg) {
     let seconds = (("00" + today.getSeconds()).slice(-2));  // 초
     let milliseconds = today.getMilliseconds(); // 밀리초
 
-    console.log(year + '-' + month + '-' + date);
-    console.log(hours + ':' + minutes + ':' + seconds + ':' + milliseconds);
+    // console.log(year + '-' + month + '-' + date);
+    // console.log(hours + ':' + minutes + ':' + seconds + ':' + milliseconds);
+    //console.log(data);
+    let todayDate = year + '-' + month + '-' + date; //오늘 날짜
 
-    let dayDiffer = getDateDiff("2022-08-15", year + '-' + month + '-' + date);
-    if (dayDiffer === 0) {
-        dayDiffer = "오늘";
+    if (data != undefined) { //데이터를 서버에서 가져올때
+        console.log(data.createdAt);
+        if (data.createdAt != undefined && data.createdAt != null && data.createdAt != "") {
+            let dbDate = new Date(data.createdAt);
+            year = dbDate.getFullYear(); // 년도
+            month = (("00" + (dbDate.getMonth() + 1)).slice(-2));  // 월
+            date = (("00" + (dbDate.getDate() + 1)).slice(-2));  // 날짜
+
+            minutes = (("00" + dbDate.getMinutes()).slice(-2));  // 분
+            seconds = (("00" + dbDate.getSeconds()).slice(-2));  // 초
+        }
+
     } else {
-        dayDiffer = dayDiffer + "일전";
+        //엔터키를 br 태그로 전환
+        msg = msg.replace(/(?:\r\n|\r|\n)/g, '<br />');
     }
-    //엔터키를 br 태그로 전환
-    msg = msg.replace(/(?:\r\n|\r|\n)/g, '<br />');
+
+    let dayDiffer = getDateDiff(todayDate, year + '-' + month + '-' + date);
+    if (dayDiffer === 0) dayDiffer = "오늘";
+    else dayDiffer = dayDiffer + "일전";
+
+
+
     return `
     <div class="sent_msg">
                 <p>${msg}</p>
@@ -46,20 +68,36 @@ const getDateDiff = (d1, d2) => {
     return Math.abs(diffDate / (1000 * 60 * 60 * 24)); // 밀리세컨 * 초 * 분 * 시 = 일
 }
 
-document.querySelector("#chat-outgoing-button").addEventListener("click", () => {
-    //alert("클릭");
+
+function initMessage(historyMsg, data) {
     let chatBox = document.querySelector("#chat-box");
     let chatOutgoinBox = document.createElement("div");
 
     chatOutgoinBox.className = "outgoing_msg";
-    chatOutgoinBox.innerHTML = getSendMsgBox(document.querySelector("#chat-outgoing-msg").value);
+    chatOutgoinBox.innerHTML = getSendMsgBox(historyMsg, data);
     chatBox.append(chatOutgoinBox);
-    document.querySelector("#chat-outgoing-msg").value = "";
+}
+
+
+function addMessage() {
+    let chatBox = document.querySelector("#chat-box");
+    let chatOutgoinBox = document.createElement("div");
+    let msgInput = document.querySelector("#chat-outgoing-msg");
+
+    chatOutgoinBox.className = "outgoing_msg";
+    chatOutgoinBox.innerHTML = getSendMsgBox(msgInput.value);
+    chatBox.append(chatOutgoinBox);
+    msgInput.value = "";
+}
+
+document.querySelector("#chat-outgoing-button").addEventListener("click", () => {
+    //alert("클릭");
+    addMessage();
 });
 
 document.querySelector("#chat-outgoing-msg").addEventListener("keyup", (e) => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     if (e.keyCode === 13) {
-        console.log("enter key");
+        //  console.log("enter key");
     }
 });
