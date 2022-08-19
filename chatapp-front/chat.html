@@ -22,32 +22,35 @@
 
 
         <div id="user_chat_data" class="user_chat_data">
-          <div class="profile_name">
-            &nbsp;&nbsp;&nbsp;&nbsp;<img src="./img/profile.png" class="mr-3 rounded-circle"> &nbsp;&nbsp; Sankar
-            Mahadevan</div>
+          
+          <div class="profile_name">     
+             <h1 id="title"></h1>         
+            &nbsp;&nbsp;&nbsp;&nbsp;<img src="./img/profile.png" class="mr-3 rounded-circle"> &nbsp;&nbsp; 
+            <span class="username">Sankar Mahadevan</span> 
+          </div>
 
           <div class="container-fluid chat_section" id="chat-box">
 
             <!-- 받은메시지 시작 -->
-            <div class="incoming_msg">
-              <div class="received_msg">
+           
+              <!-- <div class="received_msg">
                 <div class="received_withd_msg">
                   <p>Lorem Ipsum refers to text that the DTP (Desktop Publishing) industry use as replacement text when
                     the real text is not </p>
                   <span class="time_date"> 11:18 | Today</span>
                 </div>
               </div>
-            </div>
+            -->
             <!-- 받은메시지 끝 -->
 
             <!-- 보낸메시지 시작 -->
-            <div class="outgoing_msg">
+            <!-- <div class="outgoing_msg">
               <div class="sent_msg">
                 <p>Lorem Ipsum refers to text that the DTP (Desktop Publishing) industry use as replacement text when
                   the real text is not </p>
                 <span class="time_date"> 11:18 | Today</span>
               </div>
-            </div>
+            </div> -->
             
             <!-- 보낸메시지 끝 -->
 
@@ -56,7 +59,7 @@
           <div class="type_msg">
             <div class="input_msg_write">
               <!-- <input id="chat-outgoing-msg" type="text" class="write_msg" placeholder="Type a message" /> -->
-              <textarea id="chat-outgoing-msg" type="text"  class="write_msg" placeholder="Type a message" ></textarea>
+              <textarea id="chat-outgoing-msg" type="text"  class="write_msg" placeholder="메시지를 입력해 주세요." ></textarea>
               <button id="chat-outgoing-button" class="msg_send_btn" type="button"><i class="fa fa-paper-plane"
                   aria-hidden="true"></i></button>
             </div>

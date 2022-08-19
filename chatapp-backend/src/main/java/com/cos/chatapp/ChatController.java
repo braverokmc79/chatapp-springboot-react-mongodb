@@ -21,6 +21,7 @@ public class ChatController {
 
 	private final ChatRepository chatRepository;
 
+	//귓속말시 사용
 	// Flux 지속적으로 데이터를 계속 흘러보내기
 	// SSE프로토콜과 TextEventStream 데이터가 생길때마다 지속적으로 보냄
 	@CrossOrigin
@@ -30,6 +31,15 @@ public class ChatController {
 				.subscribeOn(Schedulers.boundedElastic());
 	}
 
+	
+	@CrossOrigin
+	@GetMapping(value = "/chat/roomNum/{roomNum}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+	public Flux<Chat> findByRoomNum(@PathVariable Integer roomNum) {
+		return chatRepository.mFindByRoomNum(roomNum)
+				.subscribeOn(Schedulers.boundedElastic());
+	}
+	
+	
 	// Mono 한번만 실행
 	@CrossOrigin
 	@PostMapping("/chat")
